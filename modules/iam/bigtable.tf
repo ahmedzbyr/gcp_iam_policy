@@ -18,7 +18,7 @@ locals {
 #
 
 # Authoritative
-resource "google_bigtable_instance_iam_binding" "bt_auth_sa" {
+resource "google_bigtable_instance_iam_binding" "bt_iam_authoritative" {
   for_each = local.bt_authoritative_access
   project  = var.project
   instance = each.value.component
@@ -30,7 +30,7 @@ resource "google_bigtable_instance_iam_binding" "bt_auth_sa" {
 }
 
 # Non-authoritative
-resource "google_bigtable_instance_iam_member" "bt_sa" {
+resource "google_bigtable_instance_iam_member" "bt_sa_iam_non_authoritative" {
   for_each = local.bt_sa_permissions
   project  = var.project                                    # Project
   instance = each.value.component                           # instance to give permissions on 
@@ -42,7 +42,7 @@ resource "google_bigtable_instance_iam_member" "bt_sa" {
   ]
 }
 
-resource "google_bigtable_instance_iam_member" "bt_grp" {
+resource "google_bigtable_instance_iam_member" "bt_grp_iam_non_authoritative" {
   for_each = local.bt_grps_permissions
   project  = var.project                                  # Project
   instance = each.value.component                         # instance to give permissions on 

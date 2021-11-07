@@ -18,7 +18,7 @@ locals {
 #
 
 # Authoritative
-resource "google_pubsub_subscription_iam_binding" "pbs_auth_sa" {
+resource "google_pubsub_subscription_iam_binding" "pbs_iam_authoritative" {
   for_each     = local.pbs_authoritative_access
   project      = var.project
   subscription = each.value.component
@@ -30,7 +30,7 @@ resource "google_pubsub_subscription_iam_binding" "pbs_auth_sa" {
 }
 
 # Non-authoritative
-resource "google_pubsub_subscription_iam_member" "pbs_sa" {
+resource "google_pubsub_subscription_iam_member" "pbs_sa_iam_non_authoritative" {
   for_each     = local.pbs_sa_permissions
   project      = var.project                                    # Project
   subscription = each.value.component                           # subscription  to give permissions on 
@@ -42,7 +42,7 @@ resource "google_pubsub_subscription_iam_member" "pbs_sa" {
   ]
 }
 
-resource "google_pubsub_subscription_iam_member" "pbs_grp" {
+resource "google_pubsub_subscription_iam_member" "pbs_grp_iam_non_authoritative" {
   for_each     = local.pbs_grps_permissions
   project      = var.project                                   # Project
   subscription = each.value.component                          # subscription  to give permissions on 

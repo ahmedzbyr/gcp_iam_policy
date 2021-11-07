@@ -51,7 +51,7 @@ locals {
 
   acc_service_account = flatten([
     for access_items in local.access : [
-      for sa in local.service_account : merge(access_items, local.access_conditions, { service_account = sa })
+      for sa in local.service_account : merge(access_items, { condition = local.access_conditions }, { service_account = sa })
     ]
   ])
 

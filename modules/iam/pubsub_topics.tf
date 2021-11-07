@@ -18,7 +18,7 @@ locals {
 #
 
 # Authoritative
-resource "google_pubsub_topic_iam_binding" "pbt_auth_sa" {
+resource "google_pubsub_topic_iam_binding" "pbt_iam_authoritative" {
   for_each = local.pbt_authoritative_access
   project  = var.project
   topic    = each.value.component
@@ -30,7 +30,7 @@ resource "google_pubsub_topic_iam_binding" "pbt_auth_sa" {
 }
 
 # Non-authoritative
-resource "google_pubsub_topic_iam_member" "pbt_sa" {
+resource "google_pubsub_topic_iam_member" "pbt_sa_iam_non_authoritative" {
   for_each = local.pbt_sa_permissions
   project  = var.project                                    # Project
   topic    = each.value.component                           # topic to give permissions on 
@@ -42,7 +42,7 @@ resource "google_pubsub_topic_iam_member" "pbt_sa" {
   ]
 }
 
-resource "google_pubsub_topic_iam_member" "pbt_grp" {
+resource "google_pubsub_topic_iam_member" "pbt_grp_iam_non_authoritative" {
   for_each = local.pbt_grps_permissions
   project  = var.project                                   # Project
   topic    = each.value.component                          # topic to give permissions on 

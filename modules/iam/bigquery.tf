@@ -17,7 +17,7 @@ locals {
 #
 
 # Authoritative
-resource "google_bigquery_dataset_iam_binding" "bq_auth_sa" {
+resource "google_bigquery_dataset_iam_binding" "bq_iam_authoritative" {
   for_each   = local.bq_authoritative_access
   project    = var.project
   dataset_id = each.value.component
@@ -29,7 +29,7 @@ resource "google_bigquery_dataset_iam_binding" "bq_auth_sa" {
 }
 
 # Non-authoritative
-resource "google_bigquery_dataset_iam_member" "bq_sa" {
+resource "google_bigquery_dataset_iam_member" "bq_sa_iam_non_authoritative" {
   for_each   = local.bq_sa_permissions
   project    = var.project                                    # Project
   dataset_id = each.value.component                           # dataset to give permissions on 
@@ -41,7 +41,7 @@ resource "google_bigquery_dataset_iam_member" "bq_sa" {
   ]
 }
 
-resource "google_bigquery_dataset_iam_member" "bq_grp" {
+resource "google_bigquery_dataset_iam_member" "bq_grp_iam_non_authoritative" {
   for_each   = local.bq_grps_permissions
   project    = var.project                                  # Project
   dataset_id = each.value.component                         # dataset to give permissions on 

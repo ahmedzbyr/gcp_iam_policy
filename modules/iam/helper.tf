@@ -13,14 +13,14 @@ locals {
   # Creating a service map for all the service accounts.
   acc_service_account = flatten([
     for access_items in var.access : [
-      for sa in var.service_account : merge(access_items, var.access_conditions, { service_account = sa })
+      for sa in var.service_account : merge(access_items, { condition = var.access_conditions }, { service_account = sa })
     ]
   ])
 
   # Creating a group map for all the groups.
   acc_groups = flatten([
     for access_items in var.access : [
-      for grps in var.group_name : merge(access_items, var.access_conditions, { group = grps })
+      for grps in var.group_name : merge(access_items, { condition = var.access_conditions }, { group = grps })
     ]
   ])
 

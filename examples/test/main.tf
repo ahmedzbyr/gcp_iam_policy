@@ -29,7 +29,7 @@ locals {
     {
       product    = "GCS"
       component  = "gcs_bucket_one"
-      permission = "EDITOR"
+      permission = "ADMIN"
     },
     {
       product    = "BIGTABLE"
