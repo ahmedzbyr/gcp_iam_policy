@@ -1,14 +1,17 @@
 locals {
 
-  authoritative     = var.mode_authoritative == true
+  # Adding this to make is more readable.
+  authoritative     = var.mode_authoritative
   non_authoritative = var.mode_authoritative == false
 
+  # Creating a service map for all the service accounts.
   acc_service_account = flatten([
     for access_items in var.access : [
       for sa in var.service_account : merge(access_items, var.access_conditions, { service_account = sa })
     ]
   ])
 
+  # Creating a group map for all the groups.
   acc_groups = flatten([
     for access_items in var.access : [
       for grps in var.group_name : merge(access_items, var.access_conditions, { group = grps })
@@ -22,20 +25,59 @@ locals {
   authoritative_members_grps = [for grps in var.group_name : "group:${grps}"]
   authoritative_members      = local.authoritative ? concat(local.authoritative_members_sa, local.authoritative_members_grps) : []
 
-
-
   #
   # BIGQUERY
   #
-  bq_sa_permissions       = local.non_authoritative ? { for bq_perms in local.acc_service_account : "${bq_perms.permission}-${bq_perms.product}-${bq_perms.service_account}" => bq_perms if bq_perms.product == "BIGQUERY" } : {}
-  bq_grps_permissions     = local.non_authoritative ? { for bq_perms in local.acc_groups : "${bq_perms.permission}-${bq_perms.product}-${bq_perms.group}" => bq_perms if bq_perms.product == "BIGQUERY" } : {}
-  bq_authoritative_access = local.authoritative ? { for bq_perms in var.access : "${bq_perms.permission}-${bq_perms.product}-${bq_perms.component}" => bq_perms if bq_perms.product == "BIGQUERY" } : {}
+  bq_sa_permissions       = local.non_authoritative ? { for perms in local.acc_service_account : "${perms.permission}-${perms.product}-${perms.service_account}" => perms if perms.product == "BIGQUERY" } : {}
+  bq_grps_permissions     = local.non_authoritative ? { for perms in local.acc_groups : "${perms.permission}-${perms.product}-${perms.group}" => perms if perms.product == "BIGQUERY" } : {}
+  bq_authoritative_access = local.authoritative ? { for perms in var.access : "${perms.permission}-${perms.product}-${perms.component}" => perms if perms.product == "BIGQUERY" } : {}
 
   #
   # BIGTABLE
   #
-  bt_sa_permissions       = local.non_authoritative ? { for bt_perms in local.acc_service_account : "${bt_perms.permission}-${bt_perms.product}-${bt_perms.service_account}" => bt_perms if bt_perms.product == "BIGTABLE" } : {}
-  bt_grps_permissions     = local.non_authoritative ? { for bt_perms in local.acc_groups : "${bt_perms.permission}-${bt_perms.product}-${bt_perms.group}" => bt_perms if bt_perms.product == "BIGTABLE" } : {}
-  bt_authoritative_access = local.authoritative ? { for bt_perms in var.access : "${bt_perms.permission}-${bt_perms.product}-${bt_perms.component}" => bt_perms if bt_perms.product == "BIGQUERY" } : {}
+  bt_sa_permissions       = local.non_authoritative ? { for perms in local.acc_service_account : "${perms.permission}-${perms.product}-${perms.service_account}" => perms if perms.product == "BIGTABLE" } : {}
+  bt_grps_permissions     = local.non_authoritative ? { for perms in local.acc_groups : "${perms.permission}-${perms.product}-${perms.group}" => perms if perms.product == "BIGTABLE" } : {}
+  bt_authoritative_access = local.authoritative ? { for perms in var.access : "${perms.permission}-${perms.product}-${perms.component}" => perms if perms.product == "BIGQUERY" } : {}
+
+  #
+  # DATAPROC
+  #
+  dp_sa_permissions       = local.non_authoritative ? { for perms in local.acc_service_account : "${perms.permission}-${perms.product}-${perms.service_account}" => perms if perms.product == "DATAPROC" } : {}
+  dp_grps_permissions     = local.non_authoritative ? { for perms in local.acc_groups : "${perms.permission}-${perms.product}-${perms.group}" => perms if perms.product == "DATAPROC" } : {}
+  dp_authoritative_access = local.authoritative ? { for perms in var.access : "${perms.permission}-${perms.product}-${perms.component}" => perms if perms.product == "DATAPROC" } : {}
+
+
+  #
+  # DATAFLOW
+  #
+  df_sa_permissions       = local.non_authoritative ? { for perms in local.acc_service_account : "${perms.permission}-${perms.product}-${perms.service_account}" => perms if perms.product == "DATAFLOW" } : {}
+  df_grps_permissions     = local.non_authoritative ? { for perms in local.acc_groups : "${perms.permission}-${perms.product}-${perms.group}" => perms if perms.product == "DATAFLOW" } : {}
+  df_authoritative_access = local.authoritative ? { for perms in var.access : "${perms.permission}-${perms.product}-${perms.component}" => perms if perms.product == "DATAFLOW" } : {}
+
+
+  #
+  # GCS
+  #
+  gcs_sa_permissions       = local.non_authoritative ? { for perms in local.acc_service_account : "${perms.permission}-${perms.product}-${perms.service_account}" => perms if perms.product == "GCS" } : {}
+  gcs_grps_permissions     = local.non_authoritative ? { for perms in local.acc_groups : "${perms.permission}-${perms.product}-${perms.group}" => perms if perms.product == "GCS" } : {}
+  gcs_authoritative_access = local.authoritative ? { for perms in var.access : "${perms.permission}-${perms.product}-${perms.component}" => perms if perms.product == "GCS" } : {}
+
+
+  #
+  # PUBSUB_SUBS
+  #
+  pbs_sa_permissions       = local.non_authoritative ? { for perms in local.acc_service_account : "${perms.permission}-${perms.product}-${perms.service_account}" => perms if perms.product == "PUBSUB_SUBS" } : {}
+  pbs_grps_permissions     = local.non_authoritative ? { for perms in local.acc_groups : "${perms.permission}-${perms.product}-${perms.group}" => perms if perms.product == "PUBSUB_SUBS" } : {}
+  pbs_authoritative_access = local.authoritative ? { for perms in var.access : "${perms.permission}-${perms.product}-${perms.component}" => perms if perms.product == "PUBSUB_SUBS" } : {}
+
+  #
+  # PUBSUB_TOPICS
+  #
+  pbt_sa_permissions       = local.non_authoritative ? { for perms in local.acc_service_account : "${perms.permission}-${perms.product}-${perms.service_account}" => perms if perms.product == "PUBSUB_TOPICS" } : {}
+  pbt_grps_permissions     = local.non_authoritative ? { for perms in local.acc_groups : "${perms.permission}-${perms.product}-${perms.group}" => perms if perms.product == "PUBSUB_TOPICS" } : {}
+  pbt_authoritative_access = local.authoritative ? { for perms in var.access : "${perms.permission}-${perms.product}-${perms.component}" => perms if perms.product == "PUBSUB_TOPICS" } : {}
+
+
+
 
 }
