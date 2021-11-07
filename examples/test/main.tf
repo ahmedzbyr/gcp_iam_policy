@@ -27,18 +27,25 @@ locals {
       permission = "DATA_EDITOR"
     },
     {
-      product    = "DATAPROC"
-      component  = "dp_cluster_instance_one"
-      permission = "EDITOR"
-    },
-    {
       product    = "GCS"
       component  = "gcs_bucket_one"
       permission = "EDITOR"
+    },
+    {
+      product    = "BIGTABLE"
+      component  = "my_bt_instance"
+      permission = "ADMIN"
+    },
+    {
+      product    = "PUBSUB_SUBS"
+      component  = "my_subs"
+      permission = "ADMIN"
+    },
+    {
+      product    = "PUBSUB_TOPIC"
+      component  = "my_topic"
+      permission = "VIEWER"
     }
-
-
-
   ]
 
   # This will on be added to the resource which allow conditional IAM policies
