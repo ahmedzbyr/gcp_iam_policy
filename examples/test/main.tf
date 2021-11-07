@@ -22,6 +22,11 @@ locals {
       permission = "ADMIN"
     },
     {
+      product    = "BIGQUERY"
+      component  = "bq_dataset_two"
+      permission = "DATA_EDITOR"
+    },
+    {
       product    = "DATAPROC"
       component  = "dp_cluster_instance_one"
       permission = "EDITOR"
@@ -31,6 +36,9 @@ locals {
       component  = "gcs_bucket_one"
       permission = "EDITOR"
     }
+
+
+
   ]
 
   # This will on be added to the resource which allow conditional IAM policies
@@ -40,9 +48,6 @@ locals {
     description = "Expires in 3 months"
     expression  = "request.time < timestamp(\"2022-02-01T00:00:00Z\")"
   }
-
-  # acc_service_account = flatten([for access_items in local.access : [for sa in local.service_account : merge(access_items, local.access_conditions, { service_account = sa })]])
-  # acc_groups          = flatten([for access_items in local.access : [for grps in local.group_name : merge(access_items, local.access_conditions, { group = grps })]])
 
 }
 
