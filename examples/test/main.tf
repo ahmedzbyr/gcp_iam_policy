@@ -13,7 +13,7 @@ locals {
   mode_authoritative = false
 
   # minimum set of permission at project level. 
-  project_iam = ["DATAPROC", "BIGQUERY", "BIGTABLE", "DATAFLOW", "GCS", "PUBSUB"]
+  project_iam = ["DATAPROC", "BIGQUERY", "BIGTABLE", "DATAFLOW"]
 
   access = [
     {
@@ -75,3 +75,6 @@ module "setup_iam_policy" {
 
 }
 
+output "sa" {
+  value = module.setup_iam_policy.service_account
+}

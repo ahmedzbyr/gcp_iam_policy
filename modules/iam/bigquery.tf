@@ -13,7 +13,9 @@ resource "google_bigquery_dataset_iam_binding" "ba_auth_sa" {
   dataset_id = each.value.component
   role       = local.role_mapping[each.value.permission]
   members    = local.authoritative_members
-
+  depends_on = [
+    google_service_account.service_account
+  ]
 }
 
 resource "google_bigquery_dataset_iam_member" "bq_sa" {
@@ -22,6 +24,9 @@ resource "google_bigquery_dataset_iam_member" "bq_sa" {
   dataset_id = each.value.component
   role       = local.role_mapping[each.value.permission]
   member     = "serviceAccount:${each.value.service_account}"
+  depends_on = [
+    google_service_account.service_account
+  ]
 }
 
 resource "google_bigquery_dataset_iam_member" "bq_grp" {
@@ -30,4 +35,7 @@ resource "google_bigquery_dataset_iam_member" "bq_grp" {
   dataset_id = each.value.component
   role       = local.role_mapping[each.value.permission]
   member     = "group:${each.value.group}"
+  depends_on = [
+    google_service_account.service_account
+  ]
 }

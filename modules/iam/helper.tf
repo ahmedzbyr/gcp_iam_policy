@@ -18,6 +18,13 @@ locals {
     ]
   ])
 
+  # Creating a map for service accounts to be created.
+  service_accounts_to_create = var.create_service_account ? { for sa in var.service_account : sa => { service_account = split("@", sa)[0] } } : {}
+
+  # Project level minimum permissions
+  project_iam_members_permissions = { for srvs in distinct([for srvs in local.acc_service_account : { product = srvs.product, service_account = srvs.service_account }]) : "${srvs.product}-${srvs.service_account}" => srvs if contains(var.project_iam, srvs.product)}
+
+
   #
   # Getting  authoritative_members ready if the mode_authoritative is set to true
   #
