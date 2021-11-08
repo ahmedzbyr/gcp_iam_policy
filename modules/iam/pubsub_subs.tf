@@ -21,7 +21,7 @@ locals {
 resource "google_pubsub_subscription_iam_binding" "pbs_iam_authoritative" {
   for_each     = local.pbs_authoritative_access
   project      = var.project
-  subscription = each.value.component
+  subscription = each.value.subcomponent
   role         = local.pbs_role_mapping[each.value.permission] # Role which is mapped above in local variables
   members      = local.authoritative_members                   # Authoritative Permissions on the dataset.
   depends_on = [
@@ -33,7 +33,7 @@ resource "google_pubsub_subscription_iam_binding" "pbs_iam_authoritative" {
 resource "google_pubsub_subscription_iam_member" "pbs_sa_iam_non_authoritative" {
   for_each     = local.pbs_sa_permissions
   project      = var.project                                    # Project
-  subscription = each.value.component                           # subscription  to give permissions on 
+  subscription = each.value.subcomponent                        # subscription  to give permissions on 
   role         = local.pbs_role_mapping[each.value.permission]  # Role which is mapped above in local variables
   member       = "serviceAccount:${each.value.service_account}" # Group permissions on the subscription   
 
@@ -45,7 +45,7 @@ resource "google_pubsub_subscription_iam_member" "pbs_sa_iam_non_authoritative" 
 resource "google_pubsub_subscription_iam_member" "pbs_grp_iam_non_authoritative" {
   for_each     = local.pbs_grps_permissions
   project      = var.project                                   # Project
-  subscription = each.value.component                          # subscription  to give permissions on 
+  subscription = each.value.subcomponent                       # subscription  to give permissions on 
   role         = local.pbs_role_mapping[each.value.permission] # Role which is mapped above in local variables
   member       = "group:${each.value.group}"                   # Group permissions on the subscription   
 

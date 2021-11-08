@@ -4,9 +4,9 @@ module "setup_iam_policy_basic" {
   service_account = ["bq-backups-basic@driven-lore-328513.iam.gserviceaccount.com"]
   access = [
     {
-      product    = "BIGQUERY"
-      component  = "test_dataset_id"
-      permission = "ADMIN"
+      resource     = "BIGQUERY"
+      subcomponent = "test_dataset_id"
+      permission   = "ADMIN"
     }
   ]
 }
@@ -20,9 +20,9 @@ module "setup_iam_policy_all" {
   mode_authoritative     = true
   access = [
     {
-      product    = "BIGQUERY"
-      component  = "test_dataset_id"
-      permission = "ADMIN"
+      resource     = "BIGQUERY"
+      subcomponent = "test_dataset_id"
+      permission   = "ADMIN"
     }
   ]
 }
@@ -36,9 +36,9 @@ module "setup_iam_policy_mixed" {
   mode_authoritative     = false
   access = [
     {
-      product    = "BIGQUERY"
-      component  = "test_dataset_id"
-      permission = "ADMIN"
+      resource     = "BIGQUERY"
+      subcomponent = "test_dataset_id"
+      permission   = "ADMIN"
     }
   ]
 }

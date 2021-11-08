@@ -34,7 +34,7 @@ variable "access" {
 
 variable "project_iam" {
   type        = list(any)
-  description = "List of products the services account will have min permission at project level."
+  description = "List of resources the services account will have min permission at project level."
   default     = []
 }
 

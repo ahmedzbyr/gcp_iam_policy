@@ -48,33 +48,33 @@ Idea is to setup service accounts quickly with permissions required for it to ru
 ```hcl
   access = [
     {
-      product    = "BIGQUERY"
-      component  = "bq_dataset_one"
+      resource    = "BIGQUERY"
+      subcomponent  = "bq_dataset_one"
       permission = "ADMIN"
     },
     {
-      product    = "BIGQUERY"
-      component  = "bq_dataset_two"
+      resource    = "BIGQUERY"
+      subcomponent  = "bq_dataset_two"
       permission = "DATA_EDITOR"
     },
     {
-      product    = "GCS"
-      component  = "gcs_bucket_one"
+      resource    = "GCS"
+      subcomponent  = "gcs_bucket_one"
       permission = "ADMIN"
     },
     {
-      product    = "BIGTABLE"
-      component  = "my_bt_instance"
+      resource    = "BIGTABLE"
+      subcomponent  = "my_bt_instance"
       permission = "ADMIN"
     },
     {
-      product    = "PUBSUB_SUBS"
-      component  = "my_subs"
+      resource    = "PUBSUB_SUBS"
+      subcomponent  = "my_subs"
       permission = "ADMIN"
     },
     {
-      product    = "PUBSUB_TOPIC"
-      component  = "my_topic"
+      resource    = "PUBSUB_TOPIC"
+      subcomponent  = "my_topic"
       permission = "VIEWER"
     }
   ]
@@ -103,7 +103,7 @@ module "setup_iam_policy" {
   create_service_account = local.create_service_account
   mode_authoritative     = local.mode_authoritative # "Authoritative" or "Additive" (defaults to Additive)
   project_iam            = local.project_iam        # minimum set of permission at project level. 
-  access                 = local.access             # Access permission to each component in GCP
+  access                 = local.access             # Access permission to each subcomponent in GCP
   access_conditions      = local.access_conditions
 }
 ```

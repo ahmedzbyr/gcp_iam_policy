@@ -21,7 +21,7 @@ resource "google_service_account" "service_account" {
 resource "google_project_iam_member" "project" {
   for_each = local.project_iam_members_permissions
   project  = var.project
-  role     = local.min_roles[each.value.product]            # Min permission mapping 
+  role     = local.min_roles[each.value.resource]           # Min permission mapping 
   member   = "serviceAccount:${each.value.service_account}" # Service account from the list 
 
   depends_on = [                           # We have this dependency just to make sure

@@ -10,7 +10,7 @@ locals {
 resource "google_storage_bucket_iam_binding" "storage_bucket_iam_authoritative" {
   for_each = local.gcs_authoritative_access
   #project  = var.project
-  bucket  = each.value.component
+  bucket  = each.value.subcomponent
   role    = local.gcs_role_mapping[each.value.permission] # Role which is mapped above in local variables
   members = local.authoritative_members                   # Authoritative Permissions on the dataset.
 
@@ -33,7 +33,7 @@ resource "google_storage_bucket_iam_binding" "storage_bucket_iam_authoritative" 
 resource "google_storage_bucket_iam_member" "gcs_sa_iam_non_authoritative" {
   for_each = local.gcs_sa_permissions
   #project  = var.project                                    # Project
-  bucket = each.value.component                           # bucket  to give permissions on 
+  bucket = each.value.subcomponent                        # bucket  to give permissions on 
   role   = local.gcs_role_mapping[each.value.permission]  # Role which is mapped above in local variables
   member = "serviceAccount:${each.value.service_account}" # Group permissions on the bucket   
 
@@ -54,7 +54,7 @@ resource "google_storage_bucket_iam_member" "gcs_sa_iam_non_authoritative" {
 resource "google_storage_bucket_iam_member" "gcs_grp_iam_non_authoritative" {
   for_each = local.gcs_grps_permissions
   #project  = var.project                                   # Project
-  bucket = each.value.component                          # bucket  to give permissions on 
+  bucket = each.value.subcomponent                       # bucket  to give permissions on 
   role   = local.gcs_role_mapping[each.value.permission] # Role which is mapped above in local variables
   member = "group:${each.value.group}"                   # Group permissions on the bucket   
 

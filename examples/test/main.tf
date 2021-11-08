@@ -17,34 +17,34 @@ locals {
 
   access = [
     {
-      product    = "BIGQUERY"
-      component  = "bq_dataset_one"
-      permission = "ADMIN"
+      resource     = "BIGQUERY"
+      subcomponent = "bq_dataset_one"
+      permission   = "ADMIN"
     },
     {
-      product    = "BIGQUERY"
-      component  = "bq_dataset_two"
-      permission = "DATA_EDITOR"
+      resource     = "BIGQUERY"
+      subcomponent = "bq_dataset_two"
+      permission   = "DATA_EDITOR"
     },
     {
-      product    = "GCS"
-      component  = "gcs_bucket_one"
-      permission = "ADMIN"
+      resource     = "GCS"
+      subcomponent = "gcs_bucket_one"
+      permission   = "ADMIN"
     },
     {
-      product    = "BIGTABLE"
-      component  = "my_bt_instance"
-      permission = "ADMIN"
+      resource     = "BIGTABLE"
+      subcomponent = "my_bt_instance"
+      permission   = "ADMIN"
     },
     {
-      product    = "PUBSUB_SUBS"
-      component  = "my_subs"
-      permission = "ADMIN"
+      resource     = "PUBSUB_SUBS"
+      subcomponent = "my_subs"
+      permission   = "ADMIN"
     },
     {
-      product    = "PUBSUB_TOPIC"
-      component  = "my_topic"
-      permission = "VIEWER"
+      resource     = "PUBSUB_TOPIC"
+      subcomponent = "my_topic"
+      permission   = "VIEWER"
     }
   ]
 
@@ -74,7 +74,7 @@ module "setup_iam_policy" {
   #
   mode_authoritative = local.mode_authoritative # "Authoritative" or "Additive" (defaults to Additive)
   project_iam        = local.project_iam        # minimum set of permission at project level. 
-  access             = local.access             # Access permission to each component in GCP
+  access             = local.access             # Access permission to each subcomponent in GCP
 
   # This will on be added to the resource which allow conditional IAM policies
   # Rest will ignore this. 

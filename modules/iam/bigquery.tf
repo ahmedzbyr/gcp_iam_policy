@@ -20,7 +20,7 @@ locals {
 resource "google_bigquery_dataset_iam_binding" "bq_iam_authoritative" {
   for_each   = local.bq_authoritative_access
   project    = var.project
-  dataset_id = each.value.component
+  dataset_id = each.value.subcomponent
   role       = local.bq_role_mapping[each.value.permission] # Role which is mapped above in local variables
   members    = local.authoritative_members                  # Authoritative Permissions on the dataset.
   depends_on = [
@@ -32,7 +32,7 @@ resource "google_bigquery_dataset_iam_binding" "bq_iam_authoritative" {
 resource "google_bigquery_dataset_iam_member" "bq_sa_iam_non_authoritative" {
   for_each   = local.bq_sa_permissions
   project    = var.project                                    # Project
-  dataset_id = each.value.component                           # dataset to give permissions on 
+  dataset_id = each.value.subcomponent                        # dataset to give permissions on 
   role       = local.bq_role_mapping[each.value.permission]   # Role which is mapped above in local variables
   member     = "serviceAccount:${each.value.service_account}" # Group permissions on the dataset 
 
@@ -44,7 +44,7 @@ resource "google_bigquery_dataset_iam_member" "bq_sa_iam_non_authoritative" {
 resource "google_bigquery_dataset_iam_member" "bq_grp_iam_non_authoritative" {
   for_each   = local.bq_grps_permissions
   project    = var.project                                  # Project
-  dataset_id = each.value.component                         # dataset to give permissions on 
+  dataset_id = each.value.subcomponent                      # dataset to give permissions on 
   role       = local.bq_role_mapping[each.value.permission] # Role which is mapped above in local variables
   member     = "group:${each.value.group}"                  # Group permissions on the dataset 
 

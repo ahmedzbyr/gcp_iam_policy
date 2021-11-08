@@ -21,7 +21,7 @@ locals {
 resource "google_bigtable_instance_iam_binding" "bt_iam_authoritative" {
   for_each = local.bt_authoritative_access
   project  = var.project
-  instance = each.value.component
+  instance = each.value.subcomponent
   role     = local.bt_role_mapping[each.value.permission] # Role which is mapped above in local variables
   members  = local.authoritative_members                  # Authoritative Permissions on the dataset.
   depends_on = [
@@ -33,7 +33,7 @@ resource "google_bigtable_instance_iam_binding" "bt_iam_authoritative" {
 resource "google_bigtable_instance_iam_member" "bt_sa_iam_non_authoritative" {
   for_each = local.bt_sa_permissions
   project  = var.project                                    # Project
-  instance = each.value.component                           # instance to give permissions on 
+  instance = each.value.subcomponent                        # instance to give permissions on 
   role     = local.bt_role_mapping[each.value.permission]   # Role which is mapped above in local variables
   member   = "serviceAccount:${each.value.service_account}" # Group permissions on the instance  
 
@@ -45,7 +45,7 @@ resource "google_bigtable_instance_iam_member" "bt_sa_iam_non_authoritative" {
 resource "google_bigtable_instance_iam_member" "bt_grp_iam_non_authoritative" {
   for_each = local.bt_grps_permissions
   project  = var.project                                  # Project
-  instance = each.value.component                         # instance to give permissions on 
+  instance = each.value.subcomponent                      # instance to give permissions on 
   role     = local.bt_role_mapping[each.value.permission] # Role which is mapped above in local variables
   member   = "group:${each.value.group}"                  # Group permissions on the instance  
 

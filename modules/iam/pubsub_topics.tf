@@ -21,7 +21,7 @@ locals {
 resource "google_pubsub_topic_iam_binding" "pbt_iam_authoritative" {
   for_each = local.pbt_authoritative_access
   project  = var.project
-  topic    = each.value.component
+  topic    = each.value.subcomponent
   role     = local.pbt_role_mapping[each.value.permission] # Role which is mapped above in local variables
   members  = local.authoritative_members                   # Authoritative Permissions on the dataset.
   depends_on = [
@@ -33,7 +33,7 @@ resource "google_pubsub_topic_iam_binding" "pbt_iam_authoritative" {
 resource "google_pubsub_topic_iam_member" "pbt_sa_iam_non_authoritative" {
   for_each = local.pbt_sa_permissions
   project  = var.project                                    # Project
-  topic    = each.value.component                           # topic to give permissions on 
+  topic    = each.value.subcomponent                        # topic to give permissions on 
   role     = local.pbt_role_mapping[each.value.permission]  # Role which is mapped above in local variables
   member   = "serviceAccount:${each.value.service_account}" # Group permissions on the topic    
 
@@ -45,7 +45,7 @@ resource "google_pubsub_topic_iam_member" "pbt_sa_iam_non_authoritative" {
 resource "google_pubsub_topic_iam_member" "pbt_grp_iam_non_authoritative" {
   for_each = local.pbt_grps_permissions
   project  = var.project                                   # Project
-  topic    = each.value.component                          # topic to give permissions on 
+  topic    = each.value.subcomponent                       # topic to give permissions on 
   role     = local.pbt_role_mapping[each.value.permission] # Role which is mapped above in local variables
   member   = "group:${each.value.group}"                   # Group permissions on the topic    
 

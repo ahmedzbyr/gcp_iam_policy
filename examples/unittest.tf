@@ -17,24 +17,24 @@ locals {
 
   access = [
     {
-      product    = "BIGQUERY"
-      component  = "bq_dataset_one"
-      permission = "ADMIN"
+      resource     = "BIGQUERY"
+      subcomponent = "bq_dataset_one"
+      permission   = "ADMIN"
     },
     {
-      product    = "BIGQUERY"
-      component  = "bq_dataset_two"
-      permission = "DATA_EDITOR"
+      resource     = "BIGQUERY"
+      subcomponent = "bq_dataset_two"
+      permission   = "DATA_EDITOR"
     },
     {
-      product    = "DATAPROC"
-      component  = "dp_cluster_instance_one"
-      permission = "EDITOR"
+      resource     = "DATAPROC"
+      subcomponent = "dp_cluster_instance_one"
+      permission   = "EDITOR"
     },
     {
-      product    = "GCS"
-      component  = "gcs_bucket_one"
-      permission = "EDITOR"
+      resource     = "GCS"
+      subcomponent = "gcs_bucket_one"
+      permission   = "EDITOR"
     }
 
 
@@ -66,24 +66,24 @@ locals {
   authoritative_members      = concat(local.authoritative_members_sa, local.authoritative_members_grps)
 
 
-  iam_project_members = { for items in distinct([for items in local.acc_service_account : { product = items.product, service_account = items.service_account }]) : "${items.product}-${items.service_account}" => items }
+  iam_project_members = { for items in distinct([for items in local.acc_service_account : { resource = items.resource, service_account = items.service_account }]) : "${items.resource}-${items.service_account}" => items }
 
   #
   # BIGQUERY
   #
-  bq_sa_permissions       = { for bq_perms in local.acc_service_account : "${bq_perms.permission}-${bq_perms.product}-${bq_perms.service_account}" => bq_perms if bq_perms.product == "BIGQUERY" }
-  bq_grps_permissions     = { for bq_perms in local.acc_groups : "${bq_perms.permission}-${bq_perms.product}-${bq_perms.group}" => bq_perms if bq_perms.product == "BIGQUERY" }
-  bq_authoritative_access = { for bq_perms in local.access : "${bq_perms.permission}-${bq_perms.product}-${bq_perms.component}" => bq_perms if bq_perms.product == "BIGQUERY" }
+  bq_sa_permissions       = { for bq_perms in local.acc_service_account : "${bq_perms.permission}-${bq_perms.resource}-${bq_perms.service_account}" => bq_perms if bq_perms.resource == "BIGQUERY" }
+  bq_grps_permissions     = { for bq_perms in local.acc_groups : "${bq_perms.permission}-${bq_perms.resource}-${bq_perms.group}" => bq_perms if bq_perms.resource == "BIGQUERY" }
+  bq_authoritative_access = { for bq_perms in local.access : "${bq_perms.permission}-${bq_perms.resource}-${bq_perms.subcomponent}" => bq_perms if bq_perms.resource == "BIGQUERY" }
 
   #
   # BIGTABLE
   #
   bt_sa_permissions = {
-    for bq_perms in local.acc_service_account : "${bq_perms.permission}-${bq_perms.product}-${bq_perms.service_account}" => bq_perms if bq_perms.product == "BIGTABLE"
+    for bq_perms in local.acc_service_account : "${bq_perms.permission}-${bq_perms.resource}-${bq_perms.service_account}" => bq_perms if bq_perms.resource == "BIGTABLE"
   }
 
   bt_grps_permissions = {
-    for bq_perms in local.acc_groups : "${bq_perms.permission}-${bq_perms.product}-${bq_perms.group}" => bq_perms if bq_perms.product == "BIGTABLE"
+    for bq_perms in local.acc_groups : "${bq_perms.permission}-${bq_perms.resource}-${bq_perms.group}" => bq_perms if bq_perms.resource == "BIGTABLE"
   }
 
 
